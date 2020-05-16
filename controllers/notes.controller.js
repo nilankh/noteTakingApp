@@ -62,7 +62,36 @@ module.exports.findOne = function(req, res){
 
 // Update a note identified by the noteid in the request
 module.exports.update = function(req, res){
+    // Validate request
+    if(!req.body.content){
+        return res.status(400).send({
+            message: "Note content can not be empty"
+        });
+    }
 
+    // Find note and update it with the request body
+    Note.findByIdAndUpdate(req.params.noteId, {
+        title: req.body.title || "Untitle Note",
+        content: req.body.content
+    }, {new: true})
+    .then(note => {
+        if(!note){
+            return res.status(404).send({
+                message: "Note not found with id " + req.params.noteId
+            });
+        }
+        res.send(note);
+    }).catch(err => {
+        if(err.kind === 'ObjectId') {
+            return res.status(404).send({
+                message: "Note not found with id " + req.params.noteId
+            });                
+        }
+        return res.status(500).send({
+            message: "Error updating note with id " + req.params.noteId
+        });
+    });
+    // The {new: true} option in the findByIdAndUpdate() method is used to return the modified document to the then() function instead of the original.
 }
 
 // Delete a note with the specified noteid in the request
