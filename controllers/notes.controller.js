@@ -40,7 +40,24 @@ module.exports.findAll = function(req, res){
 
 // Find a single note with a note id
 module.exports.findOne = function(req, res){
-
+    Note.findById(req.params.noteId)
+    .then(note => {
+        if(!note){
+            return res.status(404).send({
+                message: "Note not found with id " + req.params.noteId
+            });
+        }
+        res.send(note);
+    }).catch(err => {
+        if(err.kind === 'ObjectId'){
+            return res.status(404).send({
+                message: "Note not found with id " + req.params.noteId
+            });                
+        }
+        return res.status(500).send({
+            message: "Error reterieving note with id " + req.params.noteId
+        });
+    });
 }
 
 // Update a note identified by the noteid in the request
