@@ -28,7 +28,14 @@ module.exports.create = function(req, res){
 
 // Retrieve and return all notes from the database.
 module.exports.findAll = function(req, res){
-
+    Note.find()
+    .then(notes => {
+        res.send(notes);
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message || "Some error occurred while retrieving notes."
+        });
+    });
 }
 
 // Find a single note with a note id
