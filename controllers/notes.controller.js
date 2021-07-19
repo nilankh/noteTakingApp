@@ -1,5 +1,9 @@
 const Note = require('../models/Schema');
 
+// Home controller
+module.exports.home = function(req, res){
+    return res.json({"message": "Welcome to EasyNotes application. Take notes quickly. Organize and keep track of all your notes."});
+}
 // Create and save a new Note
 module.exports.create = function(req, res){
     // validate request
