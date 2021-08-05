@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/easy-notes');
+mongoose.connect('mongodb://localhost/easy-notes', {useNewUrlParser: true, useUnifiedTopology: true});
 
 const db = mongoose.connection;
 
